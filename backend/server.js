@@ -2,27 +2,56 @@ const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
-const Data = require("./data");
+// const Data = require("./data");
 
 const API_PORT = 3001;
 const app = express();
 const router = express.Router();
 
-// this is our MongoDB database
-const dbRoute = "mongodb://localhost:27017/testDB";
+// // this is our MongoDB database
+// const dbRoute = "mongodb://localhost:27017/testDB";
 
-// connects our back end code with the database
-mongoose.connect(
-  dbRoute,
-  { useNewUrlParser: true }
+// // connects our back end code with the database
+// mongoose.connect(dbRoute);
+
+/////////
+
+//Set up default mongoose connection
+var dbRoute = "mongodb://localhost:27017/testDB";
+mongoose.connect(dbRoute, { useNewUrlParser: true });
+// Get Mongoose to use the global promise library
+mongoose.Promise = global.Promise;
+//Get the default connection
+var db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// Define schema
+var Schema = mongoose.Schema;
+
+var DataSchema = new Schema(
+  {
+    id: Number,
+    message: String
+  },
+  { timestamp: true }
 );
 
-let db = mongoose.connection;
+// Compile model from schema
+var Data = mongoose.model('Data', DataSchema );
 
-db.once("open", () => console.log("connected to the database"));
+// Create an instance of model SomeModel
+var awesome_instance = new Data({ id: "007", message: "random-test" });
 
-// checks if connection with the database is successful
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
+// Save the new model instance, passing a callback
+awesome_instance.save(function (err) {
+  if (err) return handleError(err);
+  // saved!
+});
+
+
+/////////
 
 // (optional) only made for logging and
 // bodyParser, parses the request body to be a readable json format
