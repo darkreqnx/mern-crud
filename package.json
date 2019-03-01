@@ -1,0 +1,23 @@
+{
+  "name": "mern-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darkreqnx/mern-crud.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darkreqnx/mern-crud/issues"
+  },
+  "homepage": "https://github.com/darkreqnx/mern-crud#readme",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
